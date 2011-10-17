@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width">
+<title>jQuery flickable gallery</title>
+<link rel="stylesheet" type="text/css" href="jquery.flickable.gallery.css" />
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="jquery.flickable.min.js"></script>
+<script src="jquery.flickable.gallery.js"></script>
+
+<script>
+$(function () {
+
+$('div.mod_mainBnr').flickableGallery({
+	contentSelector: '.bnr',
+	pagingNavSelector: '.nav ul a',
+	prevNavSelector: '.nav_prev',
+	nextNavSelector: '.nav_next',
+	prevNavCoverSelector: '.nav_prev_cover',
+	nextNavCoverSelector: '.nav_next_cover',
+	sectionWrapperSelector: '.bnr ul',
+	sectionSelector: 'li',
+	timerInterval: 5000,
+	flickCancel: 'img'
+});
+
+});
+</script>
+</head>
+<body>
+
+
+<div class="mod_mainBnr">
+
+<div class="bnr">
+	<ul>
+		<li><a href="link1.html"><span><img src="resources/img1.jpg" alt="banner 1" width="300" height="225" /></span></a></li>
+		<li><a href="link2.html"><span><img src="resources/img2.jpg" alt="banner 2" width="300" height="225" /></span></a></li>
+		<li><a href="link3.html"><span><img src="resources/img3.jpg" alt="banner 3" width="300" height="225" /></span></a></li>
+		<li><a href="link4.html"><span><img src="resources/img4.jpg" alt="banner 4" width="300" height="225" /></span></a></li>
+		<li><a href="link5.html"><span><img src="resources/img5.jpg" alt="banner 5" width="300" height="225" /></span></a></li>
+	</ul>
+</div>
+
+<div class="nav">
+	<ul><!--
+		--><li><a href="link1.html"><span>banner 1</span></a></li><!--
+		--><li><a href="link2.html"><span>banner 2</span></a></li><!--
+		--><li><a href="link3.html"><span>banner 3</span></a></li><!--
+		--><li><a href="link4.html"><span>banner 4</span></a></li><!--
+		--><li><a href="link5.html"><span>banner 5</span></a></li><!--
+	--></ul>
+	<span class="nav_prev">一つ前にスクロール</span>
+	<span class="nav_next">一つ先にスクロール</span>
+	<span class="nav_prev_cover" style="display: none;"></span>
+	<span class="nav_next_cover" style="display: none;"></span>
+<!--/.nav--></div>
+
+<!--/.mod_mainBnr--></div>
+
+
+</body>
+</html>
