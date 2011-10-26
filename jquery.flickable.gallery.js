@@ -5,7 +5,7 @@
  * @author     RaNa design associates, inc.
  * @copyright  2011 RaNa design associates, inc.
  * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @update     2011-10-13 14:35:49
+ * @update     2011-10-26 20:57:05
  */
 
 ;(function($, window, document, undefined) {
@@ -27,42 +27,48 @@ $.fn.flickableGallery = function (options) {
  */
 function FlickableGallery() {
 	// extend default options
-	var options = this.defaultOptions;
-	$.extend(this, options, arguments[0]);
+	this.options = {};
+	$.extend(this.options, this.defaultOptions, arguments[0]);
 	// initialize
 	this._create();
 }
 FlickableGallery.prototype = {
 	defaultOptions: {
-		contentSelector: '',
-		pagingNavSelector: '',
-		prevNavSelector: '',
-		nextNavSelector: '',
-		prevNavCoverSelector: '',
-		nextNavCoverSelector: '',
-		sectionSelector: '',
+		width: null,
+		content: '.flickable-content',
+		pagingNavClassName: 'flickable-nav',
+		prevNavClassName: 'flickable-nav-prev',
+		nextNavClassName: 'flickable-nav-next',
+		prevNavCoverClassName: 'flickable-nav-prev-cover',
+		nextNavCoverClassName: 'flickable-nav-next-cover',
+		sectionSelector: 'li',
 		sectionWrapperSelector: '',
-		sectionMargin: 0,
 		sectionIndex: 0,
 		timerInterval: 3000,
 		flickCancel: 0
 	},
 	_create: function () {
 		// initial set variable
-		var context = this.element[0];
-		this.content = $(this.contentSelector, context);
-		this.pagingNav = $(this.pagingNavSelector, context);
-		this.prevNav = $(this.prevNavSelector, context);
-		this.nextNav = $(this.nextNavSelector, context);
-		this.prevNavCover = $(this.prevNavCoverSelector, context);
-		this.nextNavCover = $(this.nextNavCoverSelector, context);
-		this.sections = $(this.sectionSelector, this.content[0]);
-		this.sectionWrapper = $(this.sectionWrapperSelector, context);
+		var opt = this.options;
+		var context = opt.element[0];
+		this.element = this.options.element;
+		this.sectionIndex = opt.sectionIndex;
+		this.content = $(opt.content, context);
+		if (opt.width) {
+			this.content.width(opt.width - 2);
+		}
+		this.links = $('a', this.content[0]);
+
+		this.sections = $(opt.sectionSelector, this.content[0]);
+		this.sectionWrapper = $(opt.sectionWrapperSelector, context);
 
 		this.sections.each(function (i, section) {
 			$(section).data('index', i);
 		});
 		this.timer = {};
+
+		// initialize navigation
+		this._buildNav();
 
 		// initial update()
 		this._update();
@@ -72,10 +78,10 @@ FlickableGallery.prototype = {
 
 		// get flickable
 		this.content.flickable({
-			section: this.sectionSelector,
+			section: opt.sectionSelector,
 			friction: 0.5,
 			elasticConstant: 0.6,
-			cancel: this.flickCancel
+			cancel: opt.flickCancel
 		}).bind('flickchange', $.proxy(function (e, ui) {
 			this.sectionIndex = $(ui.newSection[0]).data('index');
 			this._updateNav(this.sectionIndex);
@@ -88,6 +94,37 @@ FlickableGallery.prototype = {
 		this._setupPagingNav();
 		this._setupPrevNextNav();
 		this._updateNav(this.sectionIndex);
+	},
+	_buildNav: function () {
+		var opt = this.options;
+		var wrap1 = $('<div/>', {
+			'class': opt.pagingNavClassName
+		});
+		var wrap2 = $('<ul/>');
+		this.links.each(function (i, link) {
+			var li = $('<li/>');
+			var a = $('<a/>', { 'href': $(link).attr('href') });
+			var span = $('<span/>');
+			var img = $(link).find('img');
+			var text = img.attr('alt') || '';
+			span.append(text);
+			a.append(span);
+			li.append(a);
+			wrap2.append(li);
+		});
+		
+		this.pagingNav = $('a', wrap2);
+		this.prevNav = $('<div/>', {
+			'class': opt.prevNavClassName });
+		this.nextNav = $('<div/>', {
+			'class': opt.nextNavClassName });
+		this.prevNavCover = $('<div/>', {
+			'class': opt.prevNavCoverClassName }).hide();
+		this.nextNavCover = $('<div/>', {
+			'class': opt.nextNavCoverClassName }).hide();
+		wrap1.append(wrap2).append(this.prevNav).append(this.nextNav)
+			.append(this.prevNavCover).append(this.nextNavCover);
+		this.element.append(wrap1);
 	},
 	_update: function() {
 		this._setupLayout();
@@ -157,6 +194,8 @@ FlickableGallery.prototype = {
 	},
 	_updateTimer: function () {
 		clearTimeout(this.timer);
+		if (!this.options.timerInterval) { return; }
+
 		this.timer = setTimeout($.proxy(function () {
 			if (this.sectionIndex >= this.sections.length - 1) {
 				this.sectionIndex = 0;
@@ -164,7 +203,7 @@ FlickableGallery.prototype = {
 				this.sectionIndex ++;
 			}
 			this._selectContent(this.sectionIndex);
-		}, this), this.timerInterval);
+		}, this), this.options.timerInterval);
 	}
 };
 

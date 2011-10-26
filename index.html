@@ -10,21 +10,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
 <script src="jquery.flickable.min.js"></script>
 <script src="jquery.flickable.gallery.js"></script>
-
+<style>
+ul, li { margin: 0; padding: 0; list-style-type: none; }
+a img { border: 0; }
+</style>
 <script>
 $(function () {
 
-$('div.mod_mainBnr').flickableGallery({
-	contentSelector: '.bnr',
-	pagingNavSelector: '.nav ul a',
-	prevNavSelector: '.nav_prev',
-	nextNavSelector: '.nav_next',
-	prevNavCoverSelector: '.nav_prev_cover',
-	nextNavCoverSelector: '.nav_next_cover',
-	sectionWrapperSelector: '.bnr ul',
-	sectionSelector: 'li',
-	timerInterval: 5000,
+$('div.flickable1').flickableGallery({
+	width: 300,
+	content: '.flickable-content',
+	timerInterval: 5000
+});
+
+$('div.flickable2').flickableGallery({
+	width: 300,
+	content: '.flickable-content',
+	timerInterval: 0,
 	flickCancel: 'img'
+});
+
+
+// prevent link action
+$('div.flickable1, div.flickable2').click(function(e) {
+	e.preventDefault();
 });
 
 });
@@ -33,9 +42,9 @@ $('div.mod_mainBnr').flickableGallery({
 <body>
 
 
-<div class="mod_mainBnr">
-
-<div class="bnr">
+<h2>フリック＋ナビゲーション＋タイマー5秒</h2>
+<div class="mod_mainBnr flickable1">
+<div class="flickable-content">
 	<ul>
 		<li><a href="link1.html"><span><img src="resources/img1.jpg" alt="banner 1" width="300" height="225" /></span></a></li>
 		<li><a href="link2.html"><span><img src="resources/img2.jpg" alt="banner 2" width="300" height="225" /></span></a></li>
@@ -44,22 +53,21 @@ $('div.mod_mainBnr').flickableGallery({
 		<li><a href="link5.html"><span><img src="resources/img5.jpg" alt="banner 5" width="300" height="225" /></span></a></li>
 	</ul>
 </div>
+<!--/.flickable1--></div>
 
-<div class="nav">
-	<ul><!--
-		--><li><a href="link1.html"><span>banner 1</span></a></li><!--
-		--><li><a href="link2.html"><span>banner 2</span></a></li><!--
-		--><li><a href="link3.html"><span>banner 3</span></a></li><!--
-		--><li><a href="link4.html"><span>banner 4</span></a></li><!--
-		--><li><a href="link5.html"><span>banner 5</span></a></li><!--
-	--></ul>
-	<span class="nav_prev">一つ前にスクロール</span>
-	<span class="nav_next">一つ先にスクロール</span>
-	<span class="nav_prev_cover" style="display: none;"></span>
-	<span class="nav_next_cover" style="display: none;"></span>
-<!--/.nav--></div>
 
-<!--/.mod_mainBnr--></div>
+<h2>ナビゲーションのみ（フリック不可、タイマー無し）</h2>
+<div class="mod_mainBnr flickable2">
+<div class="flickable-content">
+	<ul>
+		<li><a href="link1.html"><span><img src="resources/img1.jpg" alt="banner 1" width="300" height="225" /></span></a></li>
+		<li><a href="link2.html"><span><img src="resources/img2.jpg" alt="banner 2" width="300" height="225" /></span></a></li>
+		<li><a href="link3.html"><span><img src="resources/img3.jpg" alt="banner 3" width="300" height="225" /></span></a></li>
+		<li><a href="link4.html"><span><img src="resources/img4.jpg" alt="banner 4" width="300" height="225" /></span></a></li>
+		<li><a href="link5.html"><span><img src="resources/img5.jpg" alt="banner 5" width="300" height="225" /></span></a></li>
+	</ul>
+</div>
+<!--/.flickable2--></div>
 
 
 </body>
